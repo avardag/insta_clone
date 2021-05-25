@@ -19,12 +19,12 @@ export const LoginFormWrapper = styled.div`
 
 export const LoginFormTop = styled.div`
   background: #fff;
-  border: 1px solid gray;
+  border: ${({ theme }) => `1px solid ${theme.colors.grayPrimary}`};
   padding: 2rem;
 `;
 
 export const LoginFormBottom = styled.div`
-  border: 1px solid gray;
+  border: ${({ theme }) => `1px solid ${theme.colors.grayPrimary}`};
   background: #fff;
   padding: 1rem;
   margin-top: 2rem;
@@ -32,7 +32,7 @@ export const LoginFormBottom = styled.div`
   text-align: center;
   /* width: 100%; */
   & a {
-    color: #0095f6;
+    color: ${({ theme }) => `${theme.colors.blueMedium}`};
   }
 `;
 
@@ -63,7 +63,7 @@ export const LogoImage = styled.img.attrs({
 `;
 
 export const ErrorMessage = styled.p`
-  color: red;
+  color: ${({ theme }) => `${theme.colors.redPrimary}`};
   margin-bottom: 1rem;
   font-size: 0.8rem;
 `;
@@ -72,13 +72,13 @@ export const Input = styled.input`
   font-size: 0.875rem;
   /* width: calc(100% - 2rem); */
   width: 100%;
-  color: gray;
+  color: ${({ theme }) => `${theme.colors.grayBase}`};
   background: #fff;
   margin-right: 1rem;
   margin-bottom: 0.5rem;
   padding: 1.25rem 1rem;
   height: 0.5rem;
-  border: 1px solid gray;
+  border: ${({ theme }) => `1px solid ${theme.colors.grayPrimary}`};
   border-radius: 0.25rem;
   outline: 0;
   overflow: hidden;
@@ -92,7 +92,7 @@ export const Button = styled.button`
   color: #fff;
   font-weight: bold;
   /* background-color: #b2dffc; */
-  background-color: #0095f6;
+  background-color: ${({ theme }) => `${theme.colors.blueMedium}`};
   font-size: 1rem;
   padding: 0.5rem 2rem;
   margin-top: 1rem;
