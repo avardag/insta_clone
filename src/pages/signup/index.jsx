@@ -16,25 +16,27 @@ import {
   Button,
   LoginFormBottom,
   LoginFormTop,
-} from "./login.styles";
+} from "./signup.styles";
 
-export default function Login() {
+export default function Signup() {
   const history = useHistory();
   const { firebase } = useContext(FirebaseContext);
 
+  const [username, setUsername] = useState("");
+  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const isInvalid = password === "" || email === "";
 
   useEffect(() => {
-    document.title = "Login - Instagram";
+    document.title = "Signup - Instagram";
   }, []);
 
-  const handleLogin = async (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
       history.push(ROUTES.DASHBOARD);
     } catch (error) {
       setEmail("");
@@ -54,13 +56,30 @@ export default function Login() {
           </LogoWrapper>
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
-          <form action="POST" onSubmit={handleLogin}>
+          <form action="POST" onSubmit={handleSignup}>
+            <Input
+              aria-label="Enter your preferred username"
+              type="text"
+              placeholder="Enter your preferred username"
+              required
+              onChange={({ target }) => setUsername(target.value)}
+              value={username}
+            />
+            <Input
+              aria-label="Enter your Full name"
+              type="text"
+              placeholder="Full name"
+              required
+              onChange={({ target }) => setFullname(target.value)}
+              value={fullname}
+            />
             <Input
               aria-label="Enter your email address"
               type="text"
               placeholder="Email Address"
               required
               onChange={({ target }) => setEmail(target.value)}
+              value={email}
             />
             <Input
               aria-label="Enter your Password"
@@ -68,14 +87,15 @@ export default function Login() {
               placeholder="Enter Password"
               required
               onChange={({ target }) => setPassword(target.value)}
+              value={password}
             />
-            <Button disabled={isInvalid}>Log In</Button>
+            <Button disabled={isInvalid}>Sign Up</Button>
           </form>
         </LoginFormTop>
 
         <LoginFormBottom>
           <p>
-            Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign up</Link>
+            Have an account? <Link to={ROUTES.LOGIN}>Log in</Link>
           </p>
         </LoginFormBottom>
       </LoginFormWrapper>
