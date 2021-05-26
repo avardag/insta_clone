@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
 
-import FirebaseContext from "../../context/firebase";
+// import FirebaseContext from "../../context/firebase";
+import { createUser } from "../../helpers/firebase";
 import {
   LoginContainer,
   LoginImage,
@@ -20,7 +21,7 @@ import {
 
 export default function Signup() {
   const history = useHistory();
-  const { firebase } = useContext(FirebaseContext);
+  // const { firebase } = useContext(FirebaseContext);
 
   const [username, setUsername] = useState("");
   const [fullname, setFullname] = useState("");
@@ -36,9 +37,11 @@ export default function Signup() {
   const handleSignup = async (event) => {
     event.preventDefault();
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await createUser({ username, fullname, email, password });
       history.push(ROUTES.DASHBOARD);
     } catch (error) {
+      setUsername("");
+      setFullname("");
       setEmail("");
       setPassword("");
       setError(error.message);
