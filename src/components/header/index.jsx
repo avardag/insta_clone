@@ -56,7 +56,7 @@ export default function Header() {
                   <AvatarWrapper>
                     <Link to={`/p/${user?.displayName}`}>
                       <img
-                        src={`./images/avatars/${user?.displayName.toLowerCase()}.jpg`}
+                        src={`./images/avatars/${user?.displayName?.toLowerCase()}.jpg`}
                         alt={`${user?.displayName} profile`}
                       />
                     </Link>
@@ -65,10 +65,10 @@ export default function Header() {
               </>
             ) : (
               <>
-                <HeaderAuthBtn to={ROUTES.LOGIN} primary>
+                <HeaderAuthBtn to={ROUTES.LOGIN} primary={"true"}>
                   Log In
                 </HeaderAuthBtn>
-                <HeaderAuthBtn to={ROUTES.SIGN_UP} secondary>
+                <HeaderAuthBtn to={ROUTES.SIGN_UP} secondary={"true"}>
                   Sign Up
                 </HeaderAuthBtn>
               </>
