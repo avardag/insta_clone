@@ -27,7 +27,7 @@ export default function useAuthListener() {
     });
     //useEffect cleanup func
     return () => listener();
-  }, []);
+  }, [firebase]);
 
   //return the user
   return { user };

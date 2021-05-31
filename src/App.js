@@ -11,15 +11,15 @@ const NotFound = lazy(() => import("./pages/notFound/index"));
 
 function App() {
   const { user } = useAuthListener();
-  const userAuth = useContext(UserAuthContext);
+  // const userAuth = useContext(UserAuthContext);
   return (
-    <UserAuthContext.Provider value={user}>
+    <UserAuthContext.Provider value={{ user }}>
       <Router>
         <Suspense fallback={<h2>Loading.....</h2>}>
           <Switch>
             <Route path={ROUTES.LOGIN} component={Login} />
             <Route path={ROUTES.SIGN_UP} component={Signup} />
-            <Route path={ROUTES.DASHBOARD} component={Dashboard} />
+            <Route path={ROUTES.DASHBOARD} component={Dashboard} exact />
             <Route component={NotFound} />
           </Switch>
         </Suspense>
