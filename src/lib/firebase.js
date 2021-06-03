@@ -8,7 +8,7 @@ import { firebaseConfig } from "./firebaseConfig";
 // import { seedDatabase } from "../seed";
 
 const firebase = Firebase.initializeApp(firebaseConfig);
-const { FieldValue } = firebase.firestore;
+const { FieldValue } = Firebase.firestore;
 
 //seed only once
 // seedDatabase(firebase);

@@ -1,8 +1,17 @@
 import React from "react";
 import useUserInfo from "../../hooks/useUserInfo";
 
-export default function Sidebar() {
-  const { fullname, username, userId } = useUserInfo();
+import User from "./user";
+import Suggestions from "./suggestions";
+import { SidebarWrapper } from "./sidebar.styles.js";
 
-  return <div>I am Sidebar</div>;
+export default function Sidebar() {
+  const { fullname, username, userId, following } = useUserInfo();
+
+  return (
+    <SidebarWrapper>
+      <User username={username} fullname={fullname} />
+      <Suggestions userId={userId} usersFollowings={following} />
+    </SidebarWrapper>
+  );
 }

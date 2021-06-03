@@ -1,4 +1,4 @@
-import { lazy, Suspense, useContext } from "react";
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as ROUTES from "./constants/routes";
 import useAuthListener from "./hooks/useAuthListener";
