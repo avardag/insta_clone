@@ -10,6 +10,9 @@ export default function PicUpload({ user, uploadFunction }) {
     event.preventDefault();
     if (imageAsFile.type === "image/jpeg" || imageAsFile.type === "image/png") {
       const imgURL = await uploadFunction(user.userId, imageAsFile);
+      console.log("🚀 ~ handleUpload ~ imgURL", imgURL);
+      setImageAsFile("");
+      setPreviewUrl("");
       setImageUrl(imgURL);
     } else {
       console.log("Upload JPEG or PNG");
@@ -68,7 +71,7 @@ const PictureWrapper = styled.div`
   width: 300px;
   height: 300px;
   img {
-    position: cover;
+    object-fit: contain;
     width: 100%;
     height: 100%;
   }

@@ -13,6 +13,7 @@ const UserLink = styled(Link)`
 const UserImgWrapper = styled.div`
   img {
     width: 3.5rem;
+    object-fit: cover;
     height: 3.5rem;
     border-radius: 50%;
     margin-right: 0.75rem;

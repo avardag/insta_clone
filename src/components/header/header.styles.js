@@ -100,6 +100,7 @@ export const AvatarWrapper = styled.div`
   cursor: poiner;
   margin-left: 2rem;
   img {
+    object-fit: cover;
     height: 2.6rem;
     width: 2.6rem;
     border-radius: 50%;

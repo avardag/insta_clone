@@ -21,8 +21,8 @@ export default function Profile() {
           </ProfileStats>
         </ProfileTop>
       )}
-      {/* <h1>Profile of {user.displayName}</h1>
-      <PicUpload user={user} uploadFunction={uploadAvatar} /> */}
+      {/* <h1>Profile of {activeUserInfo.username}</h1>
+      <PicUpload user={activeUserInfo} uploadFunction={uploadAvatar} /> */}
       <div>
         <h2>Upload pictures</h2>
         <PicUpload user={activeUserInfo} uploadFunction={uploadImage} />
@@ -51,6 +51,7 @@ const ProfileImgWrapper = styled.div`
     height: 7rem;
     width: 7rem;
     border-radius: 50%;
+    object-fit: cover;
   }
 `;
 

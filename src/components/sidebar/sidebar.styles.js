@@ -29,8 +29,10 @@ export const ProfileLeft = styled.div`
   align-items: center;
   img {
     height: 2.5rem;
+    width: 2.5rem;
     margin-right: 0.5rem;
     border-radius: 50%;
+    object-fit: cover;
   }
   p {
     font-weight: bold;
