@@ -1,3 +1,4 @@
+import user from "../components/sidebar/user";
 import { firebase, FieldValue, storage } from "../lib/firebase";
 
 export async function doesUsernameExists(username) {
@@ -274,3 +275,54 @@ export async function uploadImage(
 // ///////////////////////////////////////////
 // END Image Upload Functions
 /////////////////////////////////////////////
+
+/**
+ * Fetches all photos from 'images' collection of a specific user given his userId
+ * @param {*} userId
+ * @returns Array of photo documents(JS objects) from firestore DB
+ */
+export async function getUsersPhotosFromDB(userId) {
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection("photos")
+      .doc(userId)
+      .collection("images")
+      .get();
+    return snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
+  } catch (error) {
+    throw new Error(`Could not fetch photos of ${userId}`);
+  }
+}
+
+/**
+ * Fetches all of photos of users followed by logged in User.
+ * @param string -  loggedInUserId -
+ * @param Array -  followingsArr -  ids of users followed by currentLoggedInUser
+ * @returns Array of photo objects
+ */
+export async function getFollowedPhotos(loggedInUserId, followingsArr) {
+  try {
+    let allPhotos = [];
+    //iterate over array of loggedInUser's followings and get their photos
+    await Promise.all(
+      followingsArr.map(async (followingUserId) => {
+        const user = await getUserByUserId(followingUserId); //get the username of following user(i.e. owner of the photo)
+        const { username, avatar } = user;
+
+        const photosArray = await getUsersPhotosFromDB(followingUserId); //array of photos of one user
+        //iterate over photos Array of one user and add each photo to allPhotos array
+        return photosArray.forEach((photo) => {
+          let loggedInUserLiked = false;
+          if (photo.likes.includes(loggedInUserId)) loggedInUserLiked = true; //check if loggedInUser id is in 'liked' array of a photo object
+
+          allPhotos.push({ ...photo, username, avatar, loggedInUserLiked }); //push all the photos 1 by 1, w/ photo obj, username of photo owner and loggedInUser liked bool
+        });
+      })
+    );
+
+    return allPhotos;
+  } catch (error) {
+    throw new Error("Could not load images of followed users");
+  }
+}
