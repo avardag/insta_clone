@@ -56,7 +56,7 @@ export default function Header() {
                   <AvatarWrapper>
                     <Link to={`/p/${user?.displayName}`}>
                       <img
-                        src={`./images/avatars/${user?.displayName?.toLowerCase()}.jpg`}
+                        src={user?.photoURL}
                         alt={`${user?.displayName} profile`}
                       />
                     </Link>

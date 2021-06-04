@@ -7,6 +7,7 @@ import UserAuthContext from "./context/userAuth";
 const Login = lazy(() => import("./pages/login"));
 const Signup = lazy(() => import("./pages/signup"));
 const Dashboard = lazy(() => import("./pages/dashboard"));
+const Profile = lazy(() => import("./pages/profile"));
 const NotFound = lazy(() => import("./pages/notFound/index"));
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path={ROUTES.LOGIN} component={Login} />
             <Route path={ROUTES.SIGN_UP} component={Signup} />
             <Route path={ROUTES.DASHBOARD} component={Dashboard} exact />
+            <Route path={ROUTES.PROFILE} component={Profile} exact />
             <Route component={NotFound} />
           </Switch>
         </Suspense>

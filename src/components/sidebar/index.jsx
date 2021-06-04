@@ -6,11 +6,10 @@ import Suggestions from "./suggestions";
 import { SidebarWrapper } from "./sidebar.styles.js";
 
 export default function Sidebar() {
-  const { fullname, username, userId, following } = useUserInfo();
-
+  const { fullname, username, userId, following, avatar } = useUserInfo();
   return (
     <SidebarWrapper>
-      <User username={username} fullname={fullname} />
+      <User username={username} fullname={fullname} avatar={avatar} />
       <Suggestions userId={userId} usersFollowings={following} />
     </SidebarWrapper>
   );

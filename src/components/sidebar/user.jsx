@@ -40,13 +40,16 @@ const RenderUserSkeleton = ({ ...props }) => (
   </div>
 );
 
-const User = ({ username, fullname }) => {
+const User = ({ username, fullname, avatar }) => {
   return !username || !fullname ? (
     <RenderUserSkeleton />
   ) : (
     <UserLink to={`/p/${username}`}>
       <UserImgWrapper>
-        <img src={`/images/avatars/${username}.jpg`} alt={username} />
+        <img
+          src={avatar ? avatar : `/images/avatars/default.png`}
+          alt={username}
+        />
       </UserImgWrapper>
       <UserInfoBox>
         <p className="username">{username}</p>

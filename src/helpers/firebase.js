@@ -1,4 +1,4 @@
-import { firebase, FieldValue } from "../lib/firebase";
+import { firebase, FieldValue, storage } from "../lib/firebase";
 
 export async function doesUsernameExists(username) {
   const result = await firebase
@@ -156,3 +156,121 @@ export async function updateLoggedInUsersFollowers(
     throw new Error(error.message);
   }
 }
+// ///////////////////////////////////////////
+// Image Upload Functions
+/////////////////////////////////////////////
+/**
+ *
+ * @param string -  currentUserId. Logged in user's firebase UID
+ * @param File - imageAsFile. Image file parsed from input[type=file]
+ * @param [boolean] - isAvatar.defaults to false
+ * @returns string - public Image Url
+ */
+export async function uploadToStorage(
+  currentUserId,
+  imageAsFile,
+  isAvatar = false
+) {
+  const metadata = {
+    owner: currentUserId,
+  };
+  const fileAddress = isAvatar
+    ? `/users/${currentUserId}/avatars/avatar`
+    : `/users/${currentUserId}/images/${imageAsFile.name}`;
+
+  // const uploadTask = storage.ref(fileAddress).put(imageAsFile, metadata);
+  // //initiates the firebase side uploading
+  // uploadTask.on(
+  //   "state_changed",
+  //   (snapShot) => {
+  //     //takes a snap shot of the process as it is happening
+  //     // console.log(snapShot);
+  //   },
+  //   (err) => {
+  //     //catches the errors
+  //   },
+  //   () => {
+  //     // Handle successful uploads on complete
+  //     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+  //       return downloadURL;
+  //     });
+  //   }
+  // );
+  /////////////////////////// ABOVE with Async Await
+  try {
+    const uploadTaskSnapshot = await storage
+      .ref(fileAddress)
+      .put(imageAsFile, metadata);
+    const downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+    // console.log(downloadURL);
+    return downloadURL;
+  } catch (error) {
+    throw new Error("Could Not Upload the Image");
+  }
+}
+
+/**
+ * Uploads image file to Fireabse Storage and save avatar's URL to Users profile doc in Firestore
+ * @param string -  currentUserId. Logged in user's firebase UID
+ * @param File - imageAsFile. Image file parsed from input[type=file]
+ * @returns string - public Image Url
+ */
+export async function uploadAvatar(currentUserId, imageAsFile) {
+  try {
+    //upload image to Storage and get Image URL
+    const imageUrl = await uploadToStorage(currentUserId, imageAsFile, true);
+    await firebase.firestore().collection("users").doc(currentUserId).update({
+      avatar: imageUrl,
+    });
+    //Update auth().currentuser. for Firebase Auth
+    await firebase.auth().currentUser.updateProfile({
+      photoURL: imageUrl,
+    });
+
+    return imageUrl;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+/**
+ * Uploads image file to Fireabse Storage and save image URL photos collection in Firestore
+ * @param string -  currentUserId. Logged in user's firebase UID
+ * @param File - imageAsFile. Image file parsed from input[type=file]
+ * @param [string] - caption, optional. Image caption
+ * @returns string - public Image Url
+ */
+export async function uploadImage(
+  currentUserId,
+  imageAsFile,
+  caption = "default photo"
+) {
+  try {
+    //upload image to Storage and get Image URL
+    const imageUrl = await uploadToStorage(currentUserId, imageAsFile, false);
+    //upload image post document to Firebase DB
+    const newDoc = await firebase
+      .firestore()
+      .collection("photos")
+      .doc(currentUserId)
+      .collection("images")
+      .add({
+        caption,
+        comments: [],
+        dateCreated: Date.now(),
+        userId: currentUserId,
+        imageSrc: imageUrl,
+        likes: [],
+        userLattitude: "",
+        userLongitude: "",
+      });
+    // console.log(newDoc.id);
+    return imageUrl;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// ///////////////////////////////////////////
+// END Image Upload Functions
+/////////////////////////////////////////////

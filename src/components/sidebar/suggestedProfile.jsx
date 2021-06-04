@@ -11,6 +11,7 @@ export default function SuggestedProfile({
   userId,
   username,
   loggedInUserId,
+  avatar,
 }) {
   //to set follow. remove from list after followed
   const [followedByUser, setFollowedByUser] = useState(false);
@@ -24,10 +25,11 @@ export default function SuggestedProfile({
       console.log("🚀 ~ handleFollowuUser ~ error", error);
     }
   };
+
   return !followedByUser ? (
     <ProfileWrapper>
       <ProfileLeft>
-        <img src={`/images/avatars/${username}.jpg`} alt="" />
+        <img src={avatar ? avatar : `/images/avatars/default.png`} alt="" />
         <Link to={`/p/${username}`}>
           <p>{username}</p>
         </Link>
