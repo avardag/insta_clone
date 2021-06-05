@@ -326,3 +326,31 @@ export async function getFollowedPhotos(loggedInUserId, followingsArr) {
     throw new Error("Could not load images of followed users");
   }
 }
+/////////////////////////
+//Likes
+////////////////////////
+
+/**
+ *
+ * @param string loggedInUserId -
+ * @param string userId -
+ * @param string docId -
+ * @param boolean toggleLiked
+ */
+export async function handleLike(loggedInUserId, userId, docId, toggleLiked) {
+  try {
+    await firebase
+      .firestore()
+      .collection("photos")
+      .doc(userId)
+      .collection("images")
+      .doc(docId)
+      .update({
+        likes: toggleLiked
+          ? FieldValue.arrayRemove(loggedInUserId)
+          : FieldValue.arrayUnion(loggedInUserId),
+      });
+  } catch (error) {
+    throw new Error("Could not update Like");
+  }
+}

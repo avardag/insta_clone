@@ -11,7 +11,6 @@ export default function Timeline() {
   //if have photos, render them
 
   const { photos } = usePhotos();
-  console.log("🚀 ~ Timeline ~ photos", photos);
 
   //RETURN
   if (!photos)
