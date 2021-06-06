@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import PostHeader from "./postHeader";
 import { PostContainer } from "./post.styles";
 import PostImage from "./postImage";
 import PostActions from "./postActions";
 import PostFooter from "./postFooter";
+import Comments from "../comments";
 
 /*
 photo:  {
@@ -23,6 +24,9 @@ photo:  {
 */
 
 export default function Post({ photo }) {
+  const commentInput = useRef(null);
+  const handleFocus = () => commentInput.current.focus();
+
   const {
     username,
     avatar,
@@ -32,6 +36,8 @@ export default function Post({ photo }) {
     likes,
     userId,
     docId,
+    comments,
+    dateCreated,
   } = photo;
   return (
     <PostContainer>
@@ -42,8 +48,16 @@ export default function Post({ photo }) {
         totalLikes={likes.length}
         userId={userId}
         docId={docId}
+        handleFocus={handleFocus}
       />
       <PostFooter caption={caption} username={username} />
+      <Comments
+        docId={docId}
+        userId={userId}
+        allComments={comments}
+        commentInput={commentInput}
+        dateCreated={dateCreated}
+      />
     </PostContainer>
   );
 }

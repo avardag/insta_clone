@@ -331,11 +331,11 @@ export async function getFollowedPhotos(loggedInUserId, followingsArr) {
 ////////////////////////
 
 /**
- *
+ * Handles like/unlike functionality on image/post
  * @param string loggedInUserId -
- * @param string userId -
- * @param string docId -
- * @param boolean toggleLiked
+ * @param string userId - user id of owner of image
+ * @param string docId - document id of image
+ * @param boolean toggleLiked - like/unlike. comes from like click in Post component
  */
 export async function handleLike(loggedInUserId, userId, docId, toggleLiked) {
   try {
@@ -352,5 +352,33 @@ export async function handleLike(loggedInUserId, userId, docId, toggleLiked) {
       });
   } catch (error) {
     throw new Error("Could not update Like");
+  }
+}
+
+///////////////////////////
+//Comments
+///////////////////////
+
+/**
+ * Function to add a comment on user's post.
+ * @param string loggedInDisplayName - loggedInUser's displayName. Comes from firebase.Auth()
+ * @param string userId - user id of image owner in firestore db
+ * @param string docId - document id of image in firestore db
+ * @param string comment - comment from input
+ * @returns Promise
+ */
+export async function addCommentOnImage(displayName, userId, docId, comment) {
+  try {
+    await firebase
+      .firestore()
+      .collection("photos")
+      .doc(userId)
+      .collection("images")
+      .doc(docId)
+      .update({
+        comments: FieldValue.arrayUnion({ displayName, comment }),
+      });
+  } catch (error) {
+    throw new Error("Unable to add comemnt");
   }
 }

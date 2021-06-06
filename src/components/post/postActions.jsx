@@ -15,6 +15,7 @@ export default function PostActions({
   totalLikes,
   userId,
   docId,
+  handleFocus,
 }) {
   const { user } = useContext(UserAuthContext);
   const loggedInUserId = user.uid;
@@ -45,7 +46,14 @@ export default function PostActions({
             }}
             liked={toggleLiked}
           />
-          <StyledCommentSvg />
+          <StyledCommentSvg
+            onClick={handleFocus}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                handleFocus();
+              }
+            }}
+          />
         </ActionsInner>
       </Actions>
       <TotalLikesContainer>
