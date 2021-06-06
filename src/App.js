@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as ROUTES from "./constants/routes";
 import useAuthListener from "./hooks/useAuthListener";
 import UserAuthContext from "./context/userAuth";
+import ProtectedRoute from "./helpers/protectedRoute";
+import UserLoggedInRedirect from "./helpers/userLoggedInRedirect";
 
 const Login = lazy(() => import("./pages/login"));
 const Signup = lazy(() => import("./pages/signup"));
@@ -18,10 +20,27 @@ function App() {
       <Router>
         <Suspense fallback={<h2>Loading.....</h2>}>
           <Switch>
-            <Route path={ROUTES.LOGIN} component={Login} />
-            <Route path={ROUTES.SIGN_UP} component={Signup} />
-            <Route path={ROUTES.DASHBOARD} component={Dashboard} exact />
-            <Route path={ROUTES.PROFILE} component={Profile} exact />
+            <UserLoggedInRedirect
+              path={ROUTES.LOGIN}
+              user={user}
+              redirectpath={ROUTES.DASHBOARD}
+            >
+              <Login />
+            </UserLoggedInRedirect>
+            <UserLoggedInRedirect
+              path={ROUTES.SIGN_UP}
+              user={user}
+              redirectpath={ROUTES.DASHBOARD}
+            >
+              <Signup />
+            </UserLoggedInRedirect>
+            <ProtectedRoute path={ROUTES.DASHBOARD} user={user} exact>
+              <Dashboard />
+            </ProtectedRoute>
+            <ProtectedRoute path={ROUTES.PROFILE} user={user} exact>
+              <Profile />
+            </ProtectedRoute>
+
             <Route component={NotFound} />
           </Switch>
         </Suspense>

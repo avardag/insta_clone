@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
 
 import FirebaseContext from "../../context/firebase";
+import UserAuthContext from "../../context/userAuth";
+
 import {
   LoginContainer,
   LoginImage,
@@ -20,7 +22,9 @@ import {
 
 export default function Login() {
   const history = useHistory();
+  const location = useLocation();
   const { firebase } = useContext(FirebaseContext);
+  const { user } = useContext(UserAuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +39,14 @@ export default function Login() {
     event.preventDefault();
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      history.push(ROUTES.DASHBOARD);
+      // history.push(ROUTES.DASHBOARD);
+      //check if user. If user, check if redirected from protected route. and send him back to that route
+      if (user) {
+        const { from } = location.state || {
+          from: { pathname: ROUTES.DASHBOARD },
+        };
+        history.replace(from);
+      }
     } catch (error) {
       setEmail("");
       setPassword("");
