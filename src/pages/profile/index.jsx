@@ -1,63 +1,48 @@
-import React from "react";
-import styled from "styled-components";
-import { uploadAvatar, uploadImage } from "../../helpers/firebase";
-import useUserInfo from "../../hooks/useUserInfo";
-import PicUpload from "./picUpload";
+import { useParams, useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getUserByUsername } from "../../helpers/firebase";
+import * as ROUTES from "../../constants/routes";
+import Header from "../../components/header";
+import UserPhotos from "./userPhotos";
+import { ProfilePageBG, ProfileContainer } from "./profile.styles";
+import ProfileHeader from "./profileHeader";
 
 export default function Profile() {
-  const activeUserInfo = useUserInfo();
+  const { username } = useParams(); // -> /p/:username  -> /p/maga10
+  const [profileOwner, setProfileOwner] = useState(null);
+  const [photos, setPhotos] = useState([]);
 
-  return (
-    <ProfileContainer>
-      {activeUserInfo && (
-        <ProfileTop>
-          <ProfileImgWrapper>
-            <img src={activeUserInfo.avatar} alt="" />
-          </ProfileImgWrapper>
-          <ProfileStats>
-            <div>
-              <h2>{activeUserInfo.username}</h2>
-            </div>
-          </ProfileStats>
-        </ProfileTop>
-      )}
-      {/* <h1>Profile of {activeUserInfo.username}</h1>
-      <PicUpload user={activeUserInfo} uploadFunction={uploadAvatar} /> */}
-      <div>
-        <h2>Upload pictures</h2>
-        <PicUpload user={activeUserInfo} uploadFunction={uploadImage} />
-      </div>
-    </ProfileContainer>
-  );
+  const history = useHistory();
+
+  useEffect(() => {
+    //first check if profile exists, if no: NOT-FOund
+    async function checkUserExists() {
+      try {
+        const user = await getUserByUsername(username);
+
+        if (user?.userId) {
+          setProfileOwner(user);
+        } else {
+          history.push(ROUTES.NOT_FOUND);
+        }
+      } catch (error) {
+        history.push(ROUTES.NOT_FOUND);
+      }
+    }
+
+    checkUserExists();
+  }, [username, history]);
+
+  return profileOwner?.username ? (
+    <ProfilePageBG>
+      <Header />
+      <ProfileContainer>
+        <ProfileHeader
+          profileOwner={profileOwner}
+          photosCount={photos ? photos.length : 0}
+        />
+        <UserPhotos user={profileOwner} photos={photos} setPhotos={setPhotos} />
+      </ProfileContainer>
+    </ProfilePageBG>
+  ) : null;
 }
-
-const ProfileContainer = styled.div`
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 4rem;
-`;
-
-const ProfileTop = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  height: 10rem;
-  margin-bottom: 2rem;
-`;
-const ProfileImgWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  img {
-    height: 7rem;
-    width: 7rem;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-`;
-
-const ProfileStats = styled.div`
-  padding: 1rem;
-  h2 {
-    font-size: 2rem;
-  }
-`;

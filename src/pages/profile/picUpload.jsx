@@ -1,81 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
+import { uploadAvatar, uploadImage } from "../../helpers/firebase";
 
-export default function PicUpload({ user, uploadFunction }) {
+export default function PicUpload({ userId, avatar, labelText, setModalShow }) {
+  const history = useHistory();
   const [imageAsFile, setImageAsFile] = useState("");
-  const [previewUrl, setPreviewUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleUpload = async (event) => {
-    event.preventDefault();
-    if (imageAsFile.type === "image/jpeg" || imageAsFile.type === "image/png") {
-      const imgURL = await uploadFunction(user.userId, imageAsFile);
-      console.log("🚀 ~ handleUpload ~ imgURL", imgURL);
-      setImageAsFile("");
-      setPreviewUrl("");
-      setImageUrl(imgURL);
+  const handleFileInputChange = async (e) => {
+    const image = e.target.files[0];
+    setImageAsFile(image);
+    // if (imageAsFile.type === "image/jpeg" || imageAsFile.type === "image/png") {
+    if (image.type === "image/jpeg" || image.type === "image/png") {
+      try {
+        const imgURL = avatar
+          ? await uploadAvatar(userId, image)
+          : await uploadImage(userId, image);
+        setImageAsFile("");
+        setImageUrl(imgURL);
+        setModalShow(false);
+        history.push("/");
+      } catch (error) {
+        setImageAsFile("");
+        console.log(" error uploading");
+      }
     } else {
       console.log("Upload JPEG or PNG");
     }
   };
 
-  const handleFileInputChange = (e) => {
-    const image = e.target.files[0];
-    const objurl = URL.createObjectURL(image);
-    setPreviewUrl(objurl);
-    setImageAsFile(image);
-  };
+  const inputName = avatar ? "avatarpic" : "picture";
 
   return (
-    <div>
-      <PicUploadContainer>
-        <UploadForm onSubmit={handleUpload}>
-          <FileInput
-            type="file"
-            name="picture"
-            id="picture"
-            onChange={(e) => handleFileInputChange(e)}
-            accept="image/png, image/jpeg"
-            required
-          />
-          <Label htmlFor="picture">+</Label>
-          {previewUrl ? (
-            <UploadBtn>Upload Now</UploadBtn>
-          ) : (
-            <UploadText>Select a picture to upload</UploadText>
-          )}
-        </UploadForm>
-        {previewUrl && (
-          <PictureWrapper>
-            <img src={previewUrl} alt="" />
-          </PictureWrapper>
-        )}
-      </PicUploadContainer>
-    </div>
+    <>
+      <FileInput
+        type="file"
+        name={inputName}
+        id={inputName}
+        onChange={(e) => handleFileInputChange(e, avatar)}
+        accept="image/png, image/jpeg"
+        required
+      />
+      {labelText ? (
+        <TextLabel htmlFor={inputName}>{labelText}</TextLabel>
+      ) : (
+        <Label htmlFor={inputName}>+</Label>
+      )}
+    </>
   );
 }
-
-const PicUploadContainer = styled.div`
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const UploadForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 3rem;
-`;
-const PictureWrapper = styled.div`
-  width: 300px;
-  height: 300px;
-  img {
-    object-fit: contain;
-    width: 100%;
-    height: 100%;
-  }
-`;
 
 const FileInput = styled.input`
   opacity: 0;
@@ -87,10 +61,10 @@ const FileInput = styled.input`
 const Label = styled.label`
   display: block;
   position: relative;
-  width: 80px;
-  height: 80px;
-  margin: 1rem;
-  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  /* margin: 1rem; */
+  border-radius: 3px;
   background: ${({ theme }) => theme.colors.grayBackground};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   display: flex;
@@ -99,27 +73,16 @@ const Label = styled.label`
   color: ${({ theme }) => theme.colors.blueMedium};
   cursor: pointer;
   font-weight: 300;
-  font-size: 4rem;
+  font-size: 2rem;
   transition: transform 0.2s ease-out;
 `;
-
-export const UploadBtn = styled.button`
-  display: inline-block;
-  color: #fff;
-  background-color: ${({ theme }) => `${theme.colors.blueMedium}`};
+const TextLabel = styled.label`
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 1.2rem;
+  color: ${({ theme }) => theme.colors.blueMedium};
   cursor: pointer;
-  font-weight: bold;
-  border: none;
-  border-radius: 0.4rem;
-  width: 8rem;
-  padding: 0.75rem 1rem;
-  line-height: 1rem;
-  font-size: 0.875rem;
-  text-align: center;
-`;
-
-export const UploadText = styled.h4`
-  color: ${({ theme }) => `${theme.colors.blueMedium}`};
-  font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease-out;
 `;

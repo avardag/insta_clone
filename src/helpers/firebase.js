@@ -77,6 +77,20 @@ export async function getUserByUserId(userId) {
   return user ? user.data() : null;
 }
 
+export async function getUserByUsername(username) {
+  try {
+    const result = await firebase
+      .firestore()
+      .collection("users")
+      .where("username", "==", username.toLowerCase())
+      .get();
+
+    return result.docs[0].data();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 /**
  * Fetch 10 profiles from firestore DB and not include those who the user already follows
  * @param {string} userId - Users ID
