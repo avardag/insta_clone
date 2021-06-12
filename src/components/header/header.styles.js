@@ -2,13 +2,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Header = styled.header`
-  height: 4rem;
+  height: 3.5rem;
   padding: 0 4rem;
   background-color: #fff;
   border-bottom: ${({ theme }) => `1px solid ${theme.colors.grayPrimary}`};
   margin-bottom: 2rem;
   /* display: flex; */
   /* align-items: center; */
+  @media (max-width: 736px) {
+    padding: 0 1rem;
+  }
 `;
 export const HeaderContainer = styled.div`
   height: 100%;
@@ -33,16 +36,16 @@ export const HeaderLeft = styled.div`
 
 export const LogoWrapper = styled.div`
   & img {
-    height: 2.4rem;
-    margin-top: 0.5rem;
+    height: 2rem;
+    margin-top: 0.4rem;
   }
 `;
 export const HeaderRight = styled.div`
   display: flex;
   align-items: center;
   svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.6rem;
+    height: 1.6rem;
     cursor: pointer;
   }
 `;
@@ -50,10 +53,8 @@ export const HeaderRight = styled.div`
 // // SVGs
 //////////////////
 const CamIconDiv = styled.div`
-  margin-right: 3rem;
+  margin-right: 2rem;
   svg {
-    width: 2rem;
-    height: 2rem;
     /* cursor: pointer; */
     color: ${({ theme }) => `${theme.colors.blueMedium}`};
   }
@@ -103,7 +104,7 @@ const HomeSvg = ({ className, ...props }) => (
 
 export const StyledHomeSvg = styled(HomeSvg)`
   color: ${({ theme }) => `${theme.colors.blackLight}`};
-  margin-right: 3rem;
+  margin-right: 2rem;
 `;
 
 const LogoutSvg = ({ className, ...props }) => (
@@ -137,8 +138,8 @@ export const AvatarWrapper = styled.div`
   margin-left: 2rem;
   img {
     object-fit: cover;
-    height: 2.6rem;
-    width: 2.6rem;
+    height: 2rem;
+    width: 2rem;
     border-radius: 50%;
   }
 `;

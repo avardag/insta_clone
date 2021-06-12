@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const ProfilePageBG = styled.div`
   background-color: ${({ theme }) => `${theme.colors.grayBackground}`};
@@ -7,6 +7,12 @@ export const ProfilePageBG = styled.div`
 export const ProfileContainer = styled.div`
   margin: 0 auto;
   max-width: 980px;
+  @media (max-width: 768px) {
+    padding: 0 2rem;
+  }
+  @media (max-width: 600px) {
+    padding: 0 1rem;
+  }
 `;
 
 ///////////////////////////////////////
@@ -20,6 +26,9 @@ export const ProfileHeadContainer = styled.div`
   justify-content: space-between;
   max-width: 980px;
   margin: 0 auto;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr 2fr 2fr;
+  }
 `;
 
 export const AvatarWrapper = styled.div`
@@ -33,6 +42,14 @@ export const AvatarWrapper = styled.div`
     object-fit: cover;
     cursor: pointer;
   }
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 600px) {
+    img {
+      height: 5rem;
+      width: 5rem;
+    }
+  }
 `;
 export const ProfileInfo = styled.div`
   grid-column: 2 / span2;
@@ -41,6 +58,9 @@ export const ProfileInfo = styled.div`
   justify-content: center;
   margin-left: 4rem;
   /* align-items: center; */
+  @media (max-width: 600px) {
+    margin-left: 1rem;
+  }
 `;
 export const ProfileInfoTop = styled.div`
   display: flex;
@@ -59,6 +79,12 @@ export const ProfileStats = styled.div`
       font-weight: bold;
     }
   }
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+    p {
+      margin-right: 1rem;
+    }
+  }
 `;
 export const ProfileFullName = styled.div`
   display: flex;
@@ -67,6 +93,9 @@ export const ProfileFullName = styled.div`
   p {
     font-weight: 500;
     font-size: 1.2rem;
+  }
+  @media (max-width: 600px) {
+    margin-top: 1rem;
   }
 `;
 
@@ -93,6 +122,9 @@ export const PhotosContainer = styled.div`
   border-top: 1px solid ${({ theme }) => `${theme.colors.grayPrimary}`};
   margin-top: 3rem;
   padding-top: 1rem;
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+  }
 `;
 
 export const PhotosGrid = styled.div`
@@ -101,6 +133,12 @@ export const PhotosGrid = styled.div`
   gap: 2rem;
   margin-top: 1rem;
   margin-bottom: 3rem;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ImageWrapper = styled.div`
