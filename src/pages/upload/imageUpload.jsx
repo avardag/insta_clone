@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { uploadAvatar } from "../../helpers/firebase";
+import { uploadImage } from "../../helpers/firebase";
 
-export default function PicUpload({ userId, labelText, setModalShow }) {
+export default function ImageUpload({ userId, caption, labelText }) {
+  console.log("🚀 ~ ImageUpload ~ userId", userId);
   const history = useHistory();
   const [imageAsFile, setImageAsFile] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -11,12 +12,12 @@ export default function PicUpload({ userId, labelText, setModalShow }) {
   const handleFileInputChange = async (e) => {
     const image = e.target.files[0];
     setImageAsFile(image);
+    // if (imageAsFile.type === "image/jpeg" || imageAsFile.type === "image/png") {
     if (image.type === "image/jpeg" || image.type === "image/png") {
       try {
-        const imgURL = await uploadAvatar(userId, image);
+        const imgURL = await uploadImage(userId, image, caption);
         setImageAsFile("");
         setImageUrl(imgURL);
-        setModalShow(false);
         history.push("/");
       } catch (error) {
         setImageAsFile("");
@@ -31,13 +32,13 @@ export default function PicUpload({ userId, labelText, setModalShow }) {
     <>
       <FileInput
         type="file"
-        name="avatarpic"
-        id="avatarpic"
+        name="picture"
+        id="picture"
         onChange={(e) => handleFileInputChange(e)}
         accept="image/png, image/jpeg"
         required
       />
-      <TextLabel htmlFor="avatarpic">{labelText}</TextLabel>
+      <TextLabel htmlFor="picture">{labelText}</TextLabel>
     </>
   );
 }

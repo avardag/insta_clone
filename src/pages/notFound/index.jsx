@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Header from "../../components/header";
 import { NotFoundBG, NotFoundText } from "./notFound.styles";
 
 function NotFound() {
@@ -7,9 +8,12 @@ function NotFound() {
   }, []);
 
   return (
-    <NotFoundBG>
-      <NotFoundText>Sorry, page not found !</NotFoundText>
-    </NotFoundBG>
+    <div>
+      <Header />
+      <NotFoundBG>
+        <NotFoundText>Sorry, page not found !</NotFoundText>
+      </NotFoundBG>
+    </div>
   );
 }
 

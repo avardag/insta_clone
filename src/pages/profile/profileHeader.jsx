@@ -35,7 +35,8 @@ export default function ProfileHeader({ photosCount, profileOwner }) {
   const [followerCount, setFollowerCount] = useState(followers.length);
 
   const activeBtnFollow =
-    loggedInUser.displayName && loggedInUser.displayName !== username;
+    loggedInUser.displayName &&
+    loggedInUser.displayName.toLowerCase() !== username.toLowerCase();
   //////////////
   //Photo change Modal
   const [modalShow, setModalShow] = useState(false);
@@ -142,7 +143,6 @@ export default function ProfileHeader({ photosCount, profileOwner }) {
       >
         <PicUpload
           userId={loggedInUser.uid}
-          avatar
           labelText="Upload Profile Photo"
           setModalShow={setModalShow}
         />

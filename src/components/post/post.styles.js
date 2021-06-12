@@ -98,7 +98,7 @@ const CommentIconDiv = styled.div`
     width: 2rem;
     cursor: pointer;
     user-select: none;
-    color: "#262626";
+    color: ${({ theme }) => `${theme.colors.blackLight}`};
     &:focus {
       outline: none;
     }

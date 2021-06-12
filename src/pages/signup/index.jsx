@@ -38,7 +38,7 @@ export default function Signup() {
     event.preventDefault();
     try {
       await createUser({ username, fullname, email, password });
-      history.push(ROUTES.DASHBOARD);
+      history.push(ROUTES.LOGIN);
     } catch (error) {
       setUsername("");
       setFullname("");
@@ -62,6 +62,7 @@ export default function Signup() {
           <form action="POST" onSubmit={handleSignup}>
             <Input
               aria-label="Enter your preferred username"
+              autocomplete="off"
               type="text"
               placeholder="Enter your preferred username"
               required
@@ -78,7 +79,7 @@ export default function Signup() {
             />
             <Input
               aria-label="Enter your email address"
-              type="text"
+              type="email"
               placeholder="Email Address"
               required
               onChange={({ target }) => setEmail(target.value)}

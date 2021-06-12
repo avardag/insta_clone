@@ -141,7 +141,7 @@ const IconSpan = styled.span`
     width: 2rem;
     cursor: pointer;
     user-select: none;
-    color: "#262626";
+    color: ${({ theme }) => `${theme.colors.blackLight}`};
   }
 `;
 

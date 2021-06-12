@@ -16,8 +16,8 @@ import {
   SignOutBtn,
   AvatarWrapper,
   HeaderAuthBtn,
+  StyledCamSvg,
 } from "./header.styles";
-import PicUpload from "../../pages/profile/picUpload";
 
 export default function Header() {
   const { firebase } = useContext(FirebaseContext);
@@ -37,10 +37,9 @@ export default function Header() {
           <HeaderRight>
             {user ? (
               <>
-                <div style={{ width: "5rem" }}>
-                  <PicUpload userId={user.uid} />
-                </div>
-
+                <Link to={ROUTES.UPLOAD}>
+                  <StyledCamSvg />
+                </Link>
                 <Link to={ROUTES.DASHBOARD}>
                   <StyledHomeSvg />
                 </Link>
@@ -61,7 +60,7 @@ export default function Header() {
                   <AvatarWrapper>
                     <Link to={`/p/${user?.displayName}`}>
                       <img
-                        src={user?.photoURL}
+                        src={user?.photoURL || "/images/avatars/default.png"}
                         alt={`${user?.displayName} profile`}
                       />
                     </Link>
