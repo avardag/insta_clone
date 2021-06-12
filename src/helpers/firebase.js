@@ -19,7 +19,7 @@ export async function createUser({ username, email, password, fullname }) {
     try {
       const createdUser = await firebase
         .auth()
-        .createUserWithEmailAndPassword(email, password);
+        .createUserWithEmailAndPassword(email.trim(), password.trim());
 
       // authentication
       // -> email & password & username (displayName)
@@ -44,9 +44,9 @@ export async function createUser({ username, email, password, fullname }) {
         .doc(createdUser.user.uid) //sets Auth UID as id of the documents
         .set({
           userId: createdUser.user.uid,
-          username: username.toLowerCase(),
+          username: username.toLowerCase().trim(),
           fullname,
-          email: email.toLowerCase(),
+          email: email.toLowerCase().trim(),
           following: [],
           followers: [],
           dateCreated: Date.now(),

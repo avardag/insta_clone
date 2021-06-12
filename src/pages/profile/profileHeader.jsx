@@ -35,6 +35,7 @@ export default function ProfileHeader({ photosCount, profileOwner }) {
   const [followerCount, setFollowerCount] = useState(followers.length);
 
   const activeBtnFollow =
+    loggedInUser &&
     loggedInUser.displayName &&
     loggedInUser.displayName.toLowerCase() !== username.toLowerCase();
   //////////////

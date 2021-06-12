@@ -8,6 +8,9 @@ export const LoginContainer = styled.div`
   height: 100vh;
   max-width: 60rem;
   margin: 0 auto;
+  @media (max-width: 980px) {
+    padding: 0 2rem;
+  }
 `;
 export const LoginFormWrapper = styled.div`
   display: flex;
@@ -36,15 +39,17 @@ export const LoginFormBottom = styled.div`
 `;
 
 export const LoginImageWrapper = styled.div`
-  display: flex;
-  width: 60%;
-  /* width: 100%; */
+  width: 100%;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 export const LoginImage = styled.img.attrs({
   src: "./images/iphone-with-profile.jpg",
   alt: "Login Image",
 })`
-  width: 80%;
+  width: 100%;
+  max-width: 25rem;
 `;
 
 export const LogoWrapper = styled.div`
