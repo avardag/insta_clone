@@ -34,6 +34,7 @@ export const HeaderImage = styled.img`
   width: 2rem;
   border-radius: 50%;
   margin-right: 1rem;
+  object-fit: cover;
 `;
 export const HeaderUsername = styled.p`
   font-weight: bold;

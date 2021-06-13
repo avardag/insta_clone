@@ -179,7 +179,7 @@ const IconSpan = styled.span`
     width: 2rem;
     cursor: pointer;
     user-select: none;
-    color: ${({ theme }) => `${theme.colors.blackLight}`};
+    color: #fff;
   }
 `;
 

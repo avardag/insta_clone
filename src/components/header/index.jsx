@@ -17,6 +17,7 @@ import {
   AvatarWrapper,
   HeaderAuthBtn,
   StyledCamSvg,
+  StyledCompassSvg,
 } from "./header.styles";
 
 export default function Header() {
@@ -39,6 +40,9 @@ export default function Header() {
               <>
                 <Link to={ROUTES.UPLOAD}>
                   <StyledCamSvg />
+                </Link>
+                <Link to={ROUTES.EXPLORE}>
+                  <StyledCompassSvg />
                 </Link>
                 <Link to={ROUTES.DASHBOARD}>
                   <StyledHomeSvg />

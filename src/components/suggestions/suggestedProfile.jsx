@@ -4,7 +4,7 @@ import {
   updateLoggedInUsersFollowers,
   updateOtherUsersFollowings,
 } from "../../helpers/firebase";
-import { ProfileWrapper, ProfileLeft, FollowBtn } from "./sidebar.styles";
+import { ProfileWrapper, ProfileLeft, FollowBtn } from "./suggestions.styles";
 
 export default function SuggestedProfile({
   profileId,

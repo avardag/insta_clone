@@ -1,4 +1,3 @@
-import user from "../components/sidebar/user";
 import { firebase, FieldValue, storage } from "../lib/firebase";
 
 export async function doesUsernameExists(username) {
@@ -95,15 +94,25 @@ export async function getUserByUsername(username) {
  * Fetch 10 profiles from firestore DB and not include those who the user already follows
  * @param {string} userId - Users ID
  * @param {string[]} usersFollowings - Array of profile ID user already following
- * @returns {Object[]} profilesArray - Array of profiles
+ * @param {Object} lastDoc - lates doc to fetch starting from
+ * @returns {Object} containing profilesArray - Array of profiles, latestDoc - last in query, isEmpty - No more to fetch
  */
-export async function getSuggestedProfiles(userId, usersFollowings) {
+export async function getSuggestedProfiles(userId, usersFollowings, lastDoc) {
   //query to get 10 profiles
   const results = await firebase
     .firestore()
     .collection("users")
+    .orderBy("dateCreated")
+    .startAfter(lastDoc || 0)
     .limit(10)
     .get();
+
+  const latestDoc = results.docs[results.docs.length - 1];
+  let isEmpty = false;
+  //No more results
+  if (results.empty) {
+    isEmpty = true;
+  }
   //turn the response to array,
   //extract the data w/ .data(),
   //filter(dont include profile of self and profiles in my followingsArray, ie those who i follow)
@@ -116,8 +125,7 @@ export async function getSuggestedProfiles(userId, usersFollowings) {
       (profile) =>
         profile.userId !== userId && !usersFollowings.includes(profile.userId)
     );
-
-  return profilesArray;
+  return { profilesArray, latestDoc, isEmpty };
 }
 
 /**
@@ -264,7 +272,7 @@ export async function uploadImage(
     //upload image to Storage and get Image URL
     const imageUrl = await uploadToStorage(currentUserId, imageAsFile, false);
     //upload image post document to Firebase DB
-    const newDoc = await firebase
+    await firebase
       .firestore()
       .collection("photos")
       .doc(currentUserId)
